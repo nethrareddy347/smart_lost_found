@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Lost & Found</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f8fafc;
+            color: #172033;
+        }
+
+        /* ================= HEADER ================= */
+
+        header {
+            height: 72px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 7%;
+
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            text-decoration: none;
+            color: #172033;
+            font-size: 25px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .logo span {
+            color:#4f46e5 ;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #475569;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        nav a:hover {
+            color: #4f46e5;
+        }
+
+        /* CLEAN SIGN IN BUTTON */
+
+        .nav-button {
+            color: #4f46e5 !important;
+            background: white;
+            border: 1px solid #4f46e5;
+            padding: 9px 17px;
+            border-radius: 8px;
+        }
+
+        .nav-button:hover {
+            background: #eef2ff;
+        }
+
+
+        /* ================= HERO ================= */
+
+        .hero {
+            min-height: 650px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 80px 7%;
+
+            background:
+                radial-gradient(
+                    circle at 80% 30%,
+                    #e0e7ff,
+                    transparent 35%
+                ),
+                #f8fafc;
+        }
+
+        .hero-content {
+            max-width: 590px;
+        }
+
+        .badge {
+            display: inline-block;
+
+            background: #eef2ff;
+            color: #4f46e5;
+
+            padding: 8px 14px;
+            border-radius: 50px;
+
+            font-size: 13px;
+            font-weight: bold;
+
+            margin-bottom: 22px;
+        }
+
+        .hero h1 {
+            font-size: 58px;
+            line-height: 1.08;
+
+            letter-spacing: -2px;
+
+            margin-bottom: 22px;
+        }
+
+        .hero h1 span {
+            color: #4f46e5;
+        }
+
+        .hero p {
+            font-size: 17px;
+            line-height: 1.7;
+
+            color: #64748b;
+
+            max-width: 540px;
+
+            margin-bottom: 32px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .primary-btn,
+        .secondary-btn {
+            text-decoration: none;
+
+            padding: 14px 21px;
+
+            border-radius: 9px;
+
+            font-size: 14px;
+            font-weight: bold;
+
+            transition: 0.2s;
+        }
+
+        .primary-btn {
+            background: #ef4444;
+            color: white;
+        }
+
+        .primary-btn:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        .secondary-btn {
+            background: #10b981;
+            color: white;
+        }
+
+        .secondary-btn:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+
+        /* ================= AI CARD ================= */
+
+        .hero-visual {
+            width: 430px;
+            min-height: 390px;
+
+            background: white;
+
+            border-radius: 22px;
+
+            padding: 28px;
+
+            box-shadow:
+                0 20px 60px rgba(15, 23, 42, 0.12);
+
+            border: 1px solid #e5e7eb;
+        }
+
+        .visual-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 25px;
+        }
+
+        .visual-title {
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .status {
+            background: #dcfce7;
+            color: #15803d;
+
+            padding: 6px 10px;
+
+            border-radius: 50px;
+
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .image-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+            gap: 12px;
+
+            margin-bottom: 22px;
+        }
+
+        .image-box {
+            height: 150px;
+
+            background: #f1f5f9;
+
+            border-radius: 13px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 42px;
+
+            border: 1px solid #e2e8f0;
+        }
+
+        .image-label {
+            font-size: 11px;
+            color: #64748b;
+
+            margin-top: 7px;
+        }
+
+        .match-result {
+            background: #f8fafc;
+
+            border: 1px solid #e2e8f0;
+
+            border-radius: 13px;
+
+            padding: 15px;
+        }
+
+        .match-top {
+            display: flex;
+            justify-content: space-between;
+
+            font-size: 13px;
+            font-weight: bold;
+
+            margin-bottom: 10px;
+        }
+
+        .match-score {
+            color: #4f46e5;
+        }
+
+        .progress {
+            height: 8px;
+
+            background: #e2e8f0;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            width: 94%;
+            height: 100%;
+
+            background: #4f46e5;
+        }
+
+
+        /* ================= STATS ================= */
+
+        .stats {
+            background: white;
+
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+
+            padding: 35px 7%;
+
+            border-top: 1px solid #e5e7eb;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .stat {
+            text-align: center;
+
+            border-right: 1px solid #e5e7eb;
+        }
+
+        .stat:last-child {
+            border-right: none;
+        }
+
+        .stat h2 {
+            font-size: 30px;
+            color: #4f46e5;
+
+            margin-bottom: 5px;
+        }
+
+        .stat p {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+
+        /* ================= SECTIONS ================= */
+
+        .section {
+            padding: 90px 7%;
+        }
+
+        .section-header {
+            text-align: center;
+
+            max-width: 650px;
+
+            margin: 0 auto 50px;
+        }
+
+        .section-header h2 {
+            font-size: 36px;
+
+            margin-bottom: 13px;
+        }
+
+        .section-header p {
+            color: #64748b;
+
+            line-height: 1.7;
+
+            font-size: 15px;
+        }
+
+
+        /* ================= HOW IT WORKS ================= */
+
+        .steps {
+            display: grid;
+
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 22px;
+        }
+
+        .step {
+            background: white;
+
+            padding: 28px;
+
+            border-radius: 16px;
+
+            border: 1px solid #e5e7eb;
+
+            transition: 0.2s;
+        }
+
+        .step:hover {
+            transform: translateY(-5px);
+
+            box-shadow:
+                0 15px 35px rgba(15,23,42,0.08);
+        }
+
+        .step-number {
+            width: 42px;
+            height: 42px;
+
+            background: #eef2ff;
+            color: #4f46e5;
+
+            border-radius: 11px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 18px;
+
+            margin-bottom: 20px;
+        }
+
+        .step h3 {
+            font-size: 17px;
+
+            margin-bottom: 10px;
+        }
+
+        .step p {
+            color: #64748b;
+
+            line-height: 1.6;
+
+            font-size: 13px;
+        }
+
+
+        /* ================= WHY SECTION ================= */
+
+        .why-section {
+            background: #eef2ff;
+        }
+
+        .features-grid {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 25px;
+        }
+
+        .feature-card {
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 17px;
+
+            border: 1px solid #e0e7ff;
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+
+            background: #eef2ff;
+
+            border-radius: 12px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 23px;
+
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 18px;
+
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            color: #64748b;
+
+            font-size: 14px;
+
+            line-height: 1.7;
+        }
+
+
+        /* ================= CTA ================= */
+
+        .cta {
+            margin: 80px 7%;
+
+            padding: 65px 40px;
+
+            border-radius: 24px;
+
+            text-align: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #312e81,
+                    #4f46e5
+                );
+
+            color: white;
+        }
+
+        .cta h2 {
+            font-size: 36px;
+
+            margin-bottom: 15px;
+        }
+
+        .cta p {
+            color: #e0e7ff;
+
+            max-width: 580px;
+
+            margin: 0 auto 28px;
+
+            line-height: 1.7;
+
+            font-size: 15px;
+        }
+
+        .cta-button {
+            display: inline-block;
+
+            text-decoration: none;
+
+            background: white;
+
+            color: #4f46e5;
+
+            padding: 13px 22px;
+
+            border-radius: 9px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            transition: 0.2s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+        }
+
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: #111827;
+
+            color: white;
+
+            padding: 35px 7%;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+        }
+
+        footer p {
+            color: #94a3b8;
+
+            font-size: 12px;
+        }
+
+        .footer-logo {
+            font-weight: bold;
+        }
+
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 950px) {
+
+            .hero {
+                flex-direction: column;
+
+                gap: 50px;
+
+                text-align: center;
+            }
+
+            .hero-content {
+                max-width: 700px;
+            }
+
+            .hero p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .hero-visual {
+                width: 100%;
+                max-width: 500px;
+            }
+
+            .steps {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 700px) {
+
+            header {
+                padding: 0 5%;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .hero {
+                padding: 60px 5%;
+            }
+
+            .hero h1 {
+                font-size: 42px;
+            }
+
+            .hero p {
+                font-size: 15px;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+
+                gap: 25px;
+            }
+
+            .stat {
+                border-right: none;
+            }
+
+            .section {
+                padding: 65px 5%;
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta {
+                margin: 50px 5%;
+
+                padding: 45px 25px;
+            }
+
+            .cta h2 {
+                font-size: 28px;
+            }
+
+            footer {
+                flex-direction: column;
+
+                gap: 10px;
+
+                text-align: center;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+    <!-- ================= HEADER ================= -->
+
+    <header>
+
+        <a href="index.html" class="logo">
+            🔎 Smart <span>Lost & Found</span>
+        </a>
+
+
+        <nav>
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="lost.html">
+                Report Lost
+            </a>
+
+            <a href="found.html">
+                Report Found
+            </a>
+
+            <a href="dashboard.html">
+                Dashboard
+            </a>
+
+            <a href="login.html" class="nav-button">
+                Sign In
+            </a>
+
+        </nav>
+
+    </header>
+
+
+
+    <!-- ================= HERO ================= -->
+
+    <section class="hero">
+
+
+        <div class="hero-content">
+
+            <div class="badge">
+                🤖 AI-Powered Lost & Found
+            </div>
+
+
+            <h1>
+                Find what you've lost.
+                <span>Faster.</span>
+            </h1>
+
+
+            <p>
+                A smarter way to report lost and found items.
+                Upload a photo, describe your item, and let our
+                AI-powered matching system help connect you with
+                possible matches.
+            </p>
+
+
+            <div class="hero-buttons">
+
+                <a href="lost.html" class="primary-btn">
+                    🔴 I Lost Something
+                </a>
+
+                <a href="found.html" class="secondary-btn">
+                    🟢 I Found Something
+                </a>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ================= AI VISUAL ================= -->
+
+        <div class="hero-visual">
+
+            <div class="visual-header">
+
+                <div class="visual-title">
+                    🤖 AI Match Engine
+                </div>
+
+                <div class="status">
+                    ● ACTIVE
+                </div>
+
+            </div>
+
+
+            <div class="image-comparison">
+
+                <div>
+
+                    <div class="image-box">
+                        👛
+                    </div>
+
+                    <div class="image-label">
+                        Lost Item
+                    </div>
+
+                </div>
+
+
+                <div>
+
+                    <div class="image-box">
+                        👛
+                    </div>
+
+                    <div class="image-label">
+                        Possible Match
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="match-result">
+
+                <div class="match-top">
+
+                    <span>
+                        Match Confidence
+                    </span>
+
+                    <span class="match-score">
+                        94%
+                    </span>
+
+                </div>
+
+
+                <div class="progress">
+
+                    <div class="progress-bar"></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= STATS ================= -->
+
+    <section class="stats">
+
+        <div class="stat">
+
+            <h2>48</h2>
+
+            <p>
+                Total Reports
+            </p>
+
+        </div>
+
+
+        <div class="stat">
+
+            <h2>30</h2>
+
+            <p>
+                Lost Items
+            </p>
+
+        </div>
+
+
+        <div class="stat">
+
+            <h2>18</h2>
+
+            <p>
+                Found Items
+            </p>
+
+        </div>
+
+
+        <div class="stat">
+
+            <h2>12</h2>
+
+            <p>
+                Possible Matches
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= HOW IT WORKS ================= -->
+
+    <section class="section">
+
+
+        <div class="section-header">
+
+            <h2>
+                How It Works
+            </h2>
+
+            <p>
+                Report your lost or found item in a few simple steps
+                and let technology help you find the right match.
+            </p>
+
+        </div>
+
+
+        <div class="steps">
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    01
+                </div>
+
+                <h3>
+                    Upload
+                </h3>
+
+                <p>
+                    Upload a clear photo of the lost or found item
+                    to help our system understand what you're looking for.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    02
+                </div>
+
+                <h3>
+                    Describe
+                </h3>
+
+                <p>
+                    Add important details such as item name,
+                    location, date, description and contact information.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    03
+                </div>
+
+                <h3>
+                    AI Matches
+                </h3>
+
+                <p>
+                    Our AI-powered matching system compares images
+                    and item details to identify possible matches.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    04
+                </div>
+
+                <h3>
+                    Get Connected
+                </h3>
+
+                <p>
+                    View possible matches and connect with the person
+                    who may have found or lost the item.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= WHY SMART LOST & FOUND ================= -->
+
+    <section class="section why-section">
+
+
+        <div class="section-header">
+
+            <h2>
+                Why Smart Lost & Found?
+            </h2>
+
+            <p>
+                Designed to make the traditional lost and found
+                process faster, simpler and more intelligent.
+            </p>
+
+        </div>
+
+
+        <div class="features-grid">
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    🤖
+                </div>
+
+                <h3>
+                    AI-Powered Matching
+                </h3>
+
+                <p>
+                    Match lost and found items using image similarity
+                    and item descriptions instead of relying only on
+                    manual searching.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    ⚡
+                </div>
+
+                <h3>
+                    Faster Recovery
+                </h3>
+
+                <p>
+                    Quickly identify possible matches and reduce the
+                    time people spend searching for their belongings.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    🔒
+                </div>
+
+                <h3>
+                    Simple & Secure
+                </h3>
+
+                <p>
+                    Keep reports organized while allowing users to
+                    connect through a structured and easy-to-use system.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= CTA ================= -->
+
+    <section class="cta">
+
+        <h2>
+            Lost something? Let's find it.
+        </h2>
+
+        <p>
+            Don't wait. Report your lost item with a photo and
+            let our smart matching system help you discover
+            possible matches.
+        </p>
+
+
+        <a href="lost.html" class="cta-button">
+            Report a Lost Item →
+        </a>
+
+    </section>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <div class="footer-logo">
+            🔎 Smart Lost & Found
+        </div>
+
+        <p>
+            AI-powered solution for smarter item recovery.
+        </p>
+
+        <p>
+            © 2026 Smart Lost & Found
+        </p>
+
+    </footer>
+
+
+</body>
+</html>

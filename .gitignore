@@ -1,0 +1,10 @@
+# Created by venv; see https://docs.python.org/3/library/venv.html
+# Created by venv; see https://docs.python.org/3/library/venv.html
+
+venv/
+.venv/
+__pycache__/
+*.pyc
+lost_found.db
+uploads/
+.env

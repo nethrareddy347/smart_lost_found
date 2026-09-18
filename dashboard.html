@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Dashboard | Smart Lost & Found
+    </title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f8fafc;
+            color: #1f2937;
+        }
+
+        header {
+            background: white;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            text-decoration: none;
+            font-size: 25px;
+            font-weight: 800;
+            color: #111827;
+        }
+
+        .logo span {
+            color: #4f46e5;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #374151;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        nav a:hover {
+            color: #4f46e5;
+        }
+
+        .nav-button {
+            color: #4f46e5 !important;
+            border: 1px solid #4f46e5;
+            padding: 9px 17px;
+            border-radius: 8px;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 55px 20px 35px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #eef2ff;
+            color: #4338ca;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .hero h1 {
+            font-size: 38px;
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: auto;
+            padding-bottom: 60px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 8px 30px rgba(0,0,0,.05);
+        }
+
+        .stat-icon {
+            font-size: 30px;
+            margin-bottom: 15px;
+        }
+
+        .stat-card h3 {
+            font-size: 30px;
+            margin-bottom: 6px;
+        }
+
+        .stat-card p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 8px 30px rgba(0,0,0,.05);
+        }
+
+        .card h2 {
+            margin-bottom: 20px;
+        }
+
+        .report-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 17px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .report-row:last-child {
+            border-bottom: none;
+        }
+
+        .report-name {
+            font-weight: bold;
+        }
+
+        .report-type {
+            color: #6b7280;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .status {
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .potential {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .verified {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .returned {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .info p {
+            color: #6b7280;
+            line-height: 1.7;
+            margin-bottom: 18px;
+        }
+
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            padding: 12px 18px;
+            border-radius: 9px;
+            font-weight: bold;
+            background: #4f46e5;
+            color: white;
+        }
+
+        .btn:hover {
+            background: #4338ca;
+        }
+
+        .refresh {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .refresh button {
+            border: none;
+            background: #f3f4f6;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .message {
+            display: none;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            background: #111827;
+            color: #9ca3af;
+            font-size: 14px;
+        }
+
+        @media (max-width: 850px) {
+
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .content {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 500px) {
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <a href="index.html" class="logo">
+        🔎 Smart <span>Lost & Found</span>
+    </a>
+
+    <nav>
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="lost.html">
+            Report Lost
+        </a>
+
+        <a href="found.html">
+            Report Found
+        </a>
+
+        <a href="dashboard.html">
+            Dashboard
+        </a>
+
+        <a href="login.html" class="nav-button">
+            Sign In
+        </a>
+
+    </nav>
+
+</header>
+
+
+<section class="hero">
+
+    <div class="badge">
+        📊 LIVE DASHBOARD
+    </div>
+
+    <h1>
+        Lost & Found Dashboard
+    </h1>
+
+    <p>
+        Real-time statistics from the Smart Lost & Found backend.
+    </p>
+
+</section>
+
+
+<main class="container">
+
+
+    <div class="refresh">
+
+        <button onclick="loadStats()">
+            🔄 Refresh Statistics
+        </button>
+
+    </div>
+
+
+    <div
+        id="errorMessage"
+        class="message error"
+    ></div>
+
+
+    <section class="stats">
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                📋
+            </div>
+
+            <h3 id="totalReports">
+                0
+            </h3>
+
+            <p>
+                Total Reports
+            </p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                🔴
+            </div>
+
+            <h3 id="lostReports">
+                0
+            </h3>
+
+            <p>
+                Lost Items
+            </p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                🟢
+            </div>
+
+            <h3 id="foundReports">
+                0
+            </h3>
+
+            <p>
+                Found Items
+            </p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                🤖
+            </div>
+
+            <h3 id="totalMatches">
+                0
+            </h3>
+
+            <p>
+                Possible Matches
+            </p>
+
+        </div>
+
+
+    </section>
+
+
+    <section class="content">
+
+
+        <div class="card">
+
+            <h2>
+                📈 Recovery Statistics
+            </h2>
+
+
+            <div class="report-row">
+
+                <div>
+
+                    <div class="report-name">
+                        Total Matches
+                    </div>
+
+                    <div class="report-type">
+                        All generated matches
+                    </div>
+
+                </div>
+
+                <strong id="matchesValue">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="report-row">
+
+                <div>
+
+                    <div class="report-name">
+                        Verified Matches
+                    </div>
+
+                    <div class="report-type">
+                        Matches confirmed by users
+                    </div>
+
+                </div>
+
+                <strong id="verifiedValue">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="report-row">
+
+                <div>
+
+                    <div class="report-name">
+                        Returned Items
+                    </div>
+
+                    <div class="report-type">
+                        Items successfully returned
+                    </div>
+
+                </div>
+
+                <strong id="returnedValue">
+                    0
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="card info">
+
+            <h2>
+                🤖 Smart Matching
+            </h2>
+
+            <p>
+                When a lost or found item is reported,
+                the backend automatically checks for
+                potential matches.
+            </p>
+
+            <p>
+                Matches are ranked using the matching
+                system and displayed on the Matches page.
+            </p>
+
+            <a
+                href="matches.html"
+                class="btn"
+            >
+                View Matches
+            </a>
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+<footer>
+
+    Smart Lost & Found © 2026
+
+    <br>
+
+    Smart system for faster item recovery.
+
+</footer>
+
+
+<script>
+
+    const API_URL = "http://127.0.0.1:5000";
+    async function loadStats() {
+
+        const errorMessage =
+            document.getElementById(
+                "errorMessage"
+            );
+
+        errorMessage.style.display =
+            "none";
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `${API_URL}/stats`
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Unable to load dashboard statistics."
+                );
+
+            }
+
+
+            const data =
+                await response.json();
+
+
+            /*
+                Data returned by Roshini's
+                /stats endpoint.
+            */
+
+            const lost =
+                Number(
+                    data.lost_reports || 0
+                );
+
+            const found =
+                Number(
+                    data.found_reports || 0
+                );
+
+            const matches =
+                Number(
+                    data.total_matches || 0
+                );
+
+            const verified =
+                Number(
+                    data.verified_matches || 0
+                );
+
+            const returned =
+                Number(
+                    data.returned_items || 0
+                );
+
+
+            const total =
+                lost + found;
+
+
+            document.getElementById(
+                "totalReports"
+            ).textContent = total;
+
+
+            document.getElementById(
+                "lostReports"
+            ).textContent = lost;
+
+
+            document.getElementById(
+                "foundReports"
+            ).textContent = found;
+
+
+            document.getElementById(
+                "totalMatches"
+            ).textContent = matches;
+
+
+            document.getElementById(
+                "matchesValue"
+            ).textContent = matches;
+
+
+            document.getElementById(
+                "verifiedValue"
+            ).textContent = verified;
+
+
+            document.getElementById(
+                "returnedValue"
+            ).textContent = returned;
+
+
+        } catch (error) {
+
+            errorMessage.textContent =
+                "❌ Backend connection failed: " +
+                error.message;
+
+            errorMessage.style.display =
+                "block";
+
+        }
+
+    }
+
+
+    /* Load statistics automatically */
+
+    loadStats();
+
+</script>
+
+
+</body>
+
+</html>

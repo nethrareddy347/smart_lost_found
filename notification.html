@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Notifications | Smart Lost & Found</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        header {
+            background: #111827;
+            color: white;
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 24px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 14px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+            margin: 40px auto;
+        }
+
+        .page-title {
+            margin-bottom: 25px;
+        }
+
+        .page-title h2 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .page-title p {
+            color: #6b7280;
+        }
+
+        .notification-card {
+            background: white;
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 18px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .notification-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .notification-icon {
+            font-size: 30px;
+        }
+
+        .notification-text {
+            margin-top: 12px;
+            color: #4b5563;
+            line-height: 1.6;
+        }
+
+        .match-score {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 7px 12px;
+            border-radius: 20px;
+            background: #dbeafe;
+            color: #1d4ed8;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .notification-actions {
+            margin-top: 18px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .secondary {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .empty {
+            background: white;
+            border-radius: 16px;
+            padding: 45px 20px;
+            text-align: center;
+            color: #6b7280;
+            border: 1px solid #e5e7eb;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 50px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+
+            header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            nav a {
+                margin: 0 6px;
+            }
+
+            .page-title h2 {
+                font-size: 25px;
+            }
+
+            .notification-header {
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+
+        <h1>🔎 Smart Lost & Found</h1>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="lost.html">Lost</a>
+            <a href="found.html">Found</a>
+            <a href="matches.html">Matches</a>
+            <a href="notifications.html">🔔 Notifications</a>
+            <a href="dashboard.html">Dashboard</a>
+        </nav>
+
+    </header>
+
+
+    <main class="container">
+
+        <div class="page-title">
+
+            <h2>🔔 Notifications</h2>
+
+            <p>
+                Stay updated about your lost and found item matches.
+            </p>
+
+        </div>
+
+
+        <div id="notificationsContainer">
+
+            <div class="empty">
+                Loading notifications...
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <footer>
+
+        Smart Lost & Found © 2026
+        <br>
+        Smart system for faster item recovery.
+
+    </footer>
+
+
+    <script>
+
+        const API_URL = "http://127.0.0.1:5000";
+
+
+        async function loadNotifications() {
+
+            const container =
+                document.getElementById("notificationsContainer");
+
+            try {
+
+                const response =
+                    await fetch(`${API_URL}/matches`);
+
+                if (!response.ok) {
+                    throw new Error("Failed to load matches");
+                }
+
+                const matches =
+                    await response.json();
+
+
+                if (!matches || matches.length === 0) {
+
+                    container.innerHTML = `
+                        <div class="empty">
+
+                            <div style="font-size: 45px;">
+                                🔔
+                            </div>
+
+                            <h3 style="margin: 12px 0;">
+                                No notifications yet
+                            </h3>
+
+                            <p>
+                                New AI matches will appear here automatically.
+                            </p>
+
+                        </div>
+                    `;
+
+                    return;
+                }
+
+
+                container.innerHTML =
+                    matches.map(match => {
+
+                        const score =
+                            Number(match.score || 0).toFixed(2);
+
+                        let icon = "🔔";
+                        let title = "Possible Match Found";
+                        let message =
+                            "Our AI system found a possible match for your item.";
+
+                        if (match.status === "verified") {
+
+                            icon = "✅";
+                            title = "Match Verified";
+                            message =
+                                "A potential match has been verified.";
+
+                        }
+
+                        if (match.status === "returned") {
+
+                            icon = "📦";
+                            title = "Item Returned";
+                            message =
+                                "This matched item has been marked as returned.";
+
+                        }
+
+
+                        return `
+
+                            <div class="notification-card">
+
+                                <div class="notification-header">
+
+                                    <div>
+
+                                        <div class="notification-title">
+                                            ${icon} ${title}
+                                        </div>
+
+                                    </div>
+
+                                    <div class="notification-icon">
+                                        🤖
+                                    </div>
+
+                                </div>
+
+
+                                <div class="notification-text">
+
+                                    <strong>
+                                        ${escapeHTML(match.lost_item || "Lost Item")}
+                                    </strong>
+
+                                    may match with
+
+                                    <strong>
+                                        ${escapeHTML(match.found_item || "Found Item")}
+                                    </strong>.
+
+                                    <br><br>
+
+                                    ${message}
+
+                                </div>
+
+
+                                <span class="match-score">
+
+                                    AI Match Score: ${score}%
+
+                                </span>
+
+
+                                <div class="notification-actions">
+
+                                    <a
+                                        href="matches.html"
+                                        class="btn primary"
+                                    >
+                                        View Match
+                                    </a>
+
+                                    ${
+                                        match.status === "potential"
+                                        ?
+                                        `
+                                        <button
+                                            class="btn secondary"
+                                            onclick="verifyMatch('${match.id}')"
+                                        >
+                                            ✅ Verify
+                                        </button>
+                                        `
+                                        :
+                                        ""
+                                    }
+
+                                </div>
+
+                            </div>
+
+                        `;
+
+                    }).join("");
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                container.innerHTML = `
+
+                    <div class="empty">
+
+                        <div style="font-size: 45px;">
+                            ⚠️
+                        </div>
+
+                        <h3 style="margin: 12px 0;">
+                            Unable to load notifications
+                        </h3>
+
+                        <p>
+                            Make sure the Flask backend is running.
+                        </p>
+
+                    </div>
+
+                `;
+
+            }
+
+        }
+
+
+        async function verifyMatch(matchId) {
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${API_URL}/matches/${matchId}/status`,
+                        {
+                            method: "PATCH",
+
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+
+                            body: JSON.stringify({
+                                status: "verified"
+                            })
+                        }
+                    );
+
+
+                if (!response.ok) {
+
+                    const data =
+                        await response.json();
+
+                    throw new Error(
+                        data.error || "Failed to verify match"
+                    );
+
+                }
+
+
+                alert("✅ Match verified successfully!");
+
+                loadNotifications();
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert(
+                    "❌ Failed to verify match: " +
+                    error.message
+                );
+
+            }
+
+        }
+
+
+        function escapeHTML(value) {
+
+            return String(value ?? "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+
+        }
+
+
+        loadNotifications();
+
+    </script>
+
+</body>
+
+</html>

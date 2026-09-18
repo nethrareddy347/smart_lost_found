@@ -1,0 +1,7 @@
+Flask
+flask-cors
+torch
+Pillow
+transformers
+sentence-transformers
+scikit-learn

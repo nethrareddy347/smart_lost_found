@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Report Lost Item | Smart Lost & Found</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f8fafc;
+            color: #1f2937;
+        }
+
+        header {
+            background: white;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            text-decoration: none;
+            font-size: 25px;
+            font-weight: 800;
+            color: #111827;
+        }
+
+        .logo span {
+            color: #4f46e5;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #374151;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        nav a:hover {
+            color: #4f46e5;
+        }
+
+        .nav-button {
+            color: #4f46e5 !important;
+            background: white;
+            border: 1px solid #4f46e5;
+            padding: 9px 17px;
+            border-radius: 8px;
+        }
+
+        .page-header {
+            text-align: center;
+            padding: 55px 20px 30px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .page-header h1 {
+            font-size: 38px;
+            margin-bottom: 12px;
+        }
+
+        .page-header p {
+            color: #6b7280;
+            max-width: 650px;
+            margin: auto;
+            line-height: 1.6;
+        }
+
+        .steps {
+            display: flex;
+            justify-content: center;
+            gap: 45px;
+            margin: 20px auto 40px;
+            color: #6b7280;
+        }
+
+        .step {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .active {
+            color: #dc2626;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+            padding-bottom: 60px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e5e7eb;
+        }
+
+        .card h2 {
+            margin-bottom: 8px;
+        }
+
+        .card-subtitle {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #d1d5db;
+            border-radius: 9px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #dc2626;
+        }
+
+        textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        .upload-box {
+            border: 2px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .upload-box:hover {
+            border-color: #dc2626;
+            background: #fff7f7;
+        }
+
+        .upload-box input {
+            display: none;
+        }
+
+        .upload-icon {
+            font-size: 35px;
+            margin-bottom: 8px;
+        }
+
+        .upload-text {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        #imagePreview {
+            display: none;
+            max-width: 220px;
+            max-height: 180px;
+            margin: 15px auto 0;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: #dc2626;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background: #b91c1c;
+        }
+
+        .submit-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .info-card {
+            margin-bottom: 20px;
+        }
+
+        .info-card h3 {
+            margin-bottom: 10px;
+        }
+
+        .info-card p {
+            color: #6b7280;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .ai-box {
+            background: #eef2ff;
+            border: 1px solid #c7d2fe;
+            padding: 20px;
+            border-radius: 14px;
+        }
+
+        .ai-box h3 {
+            color: #3730a3;
+            margin-bottom: 10px;
+        }
+
+        .secure-box {
+            background: #fef2f2;
+            padding: 15px;
+            border-radius: 10px;
+            color: #991b1b;
+            font-size: 13px;
+            margin-top: 20px;
+        }
+
+        .message {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: bold;
+            line-height: 1.5;
+        }
+
+        .success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            background: #111827;
+            color: #9ca3af;
+            font-size: 14px;
+        }
+
+        @media (max-width: 800px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header h1 {
+                font-size: 30px;
+            }
+
+            .steps {
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <a href="index.html" class="logo">
+        🔎 Smart <span>Lost & Found</span>
+    </a>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="lost.html">Report Lost</a>
+        <a href="found.html">Report Found</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="login.html" class="nav-button">Sign In</a>
+    </nav>
+</header>
+
+<section class="page-header">
+
+    <div class="badge">🔴 LOST ITEM</div>
+
+    <h1>Report a Lost Item</h1>
+
+    <p>
+        Lost something? Submit the details and our smart matching
+        system will help identify possible found items.
+    </p>
+
+</section>
+
+<div class="steps">
+    <div class="step active">1️⃣ Report</div>
+    <div class="step">2️⃣ AI Matching</div>
+    <div class="step">3️⃣ Possible Match</div>
+</div>
+
+<main class="container">
+
+    <div class="card">
+
+        <h2>Lost Item Details</h2>
+
+        <p class="card-subtitle">
+            Provide accurate information about the item you lost.
+        </p>
+
+        <form id="lostForm">
+
+            <div class="form-group">
+
+                <label>Item Photo</label>
+
+                <label class="upload-box">
+
+                    <div class="upload-icon">📷</div>
+
+                    <div class="upload-text">
+                        Click here to upload a photo
+                    </div>
+
+                    <input
+                        type="file"
+                        id="itemPhoto"
+                        accept="image/*"
+                        required
+                    >
+
+                    <img id="imagePreview">
+
+                </label>
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="itemName">
+                    Item Name
+                </label>
+
+                <input
+                    type="text"
+                    id="itemName"
+                    placeholder="Example: Black Backpack"
+                    required
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="category">
+                    Category
+                </label>
+
+                <select id="category" required>
+
+                    <option value="">
+                        Select category
+                    </option>
+
+                    <option value="wallet">
+                        Wallet
+                    </option>
+
+                    <option value="phone">
+                        Phone
+                    </option>
+
+                    <option value="bag">
+                        Bag
+                    </option>
+
+                    <option value="keys">
+                        Keys
+                    </option>
+
+                    <option value="id-card">
+                        ID Card
+                    </option>
+
+                    <option value="bottle">
+                        Bottle
+                    </option>
+
+                    <option value="umbrella">
+                        Umbrella
+                    </option>
+
+                    <option value="other">
+                        Other
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="description">
+                    Description
+                </label>
+
+                <textarea
+                    id="description"
+                    placeholder="Describe colour, brand, special marks, etc."
+                    required
+                ></textarea>
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="location">
+                    Where did you lose it?
+                </label>
+
+                <select id="location" required>
+
+                    <option value="">
+                        Select location
+                    </option>
+
+                    <option>
+                        College Canteen
+                    </option>
+
+                    <option>
+                        Library
+                    </option>
+
+                    <option>
+                        Classroom
+                    </option>
+
+                    <option>
+                        Bus Stop
+                    </option>
+
+                    <option>
+                        Parking Area
+                    </option>
+
+                    <option>
+                        Other
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="dateLost">
+                    Date Lost
+                </label>
+
+                <input
+                    type="date"
+                    id="dateLost"
+                    required
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="contact">
+                    Contact Information
+                </label>
+
+                <input
+                    type="text"
+                    id="contact"
+                    placeholder="Email or phone number"
+                >
+
+            </div>
+
+            <button
+                type="submit"
+                class="submit-btn"
+                id="submitBtn"
+            >
+                📤 Submit Lost Item
+            </button>
+
+            <div id="successMessage" class="message success"></div>
+
+            <div id="errorMessage" class="message error"></div>
+
+        </form>
+
+    </div>
+
+    <aside>
+
+        <div class="card info-card">
+
+            <h3>🤖 Smart Matching</h3>
+
+            <p>
+                The system compares your lost item with found reports
+                using category, name, location and report date.
+            </p>
+
+        </div>
+
+        <div class="card info-card">
+
+            <h3>📸 Why Upload a Photo?</h3>
+
+            <p>
+                A clear image helps the system compare items and
+                makes identification easier.
+            </p>
+
+        </div>
+
+        <div class="ai-box">
+
+            <h3>✨ AI Match Engine</h3>
+
+            <p>
+                Potential matches are generated automatically after
+                your report is saved.
+            </p>
+
+        </div>
+
+        <div class="secure-box">
+
+            🔒 Your information is used only for the
+            Smart Lost & Found system.
+
+        </div>
+
+    </aside>
+
+</main>
+
+<footer>
+
+    Smart Lost & Found © 2026
+    <br>
+    Smart system for faster item recovery.
+
+</footer>
+
+<script>
+
+    /*
+        Roshini's backend
+    */
+   const API_URL = "http://127.0.0.1:5000";
+    const photoInput =
+        document.getElementById("itemPhoto");
+
+    const imagePreview =
+        document.getElementById("imagePreview");
+
+    const form =
+        document.getElementById("lostForm");
+
+    const submitBtn =
+        document.getElementById("submitBtn");
+
+    const successMessage =
+        document.getElementById("successMessage");
+
+    const errorMessage =
+        document.getElementById("errorMessage");
+
+
+    /* Image preview */
+
+    photoInput.addEventListener("change", function () {
+
+        const file = this.files[0];
+
+        if (file) {
+
+            imagePreview.src =
+                URL.createObjectURL(file);
+
+            imagePreview.style.display = "block";
+        }
+
+    });
+
+
+    /* Submit form */
+
+    form.addEventListener("submit", async function (event) {
+
+        event.preventDefault();
+
+
+        const photo =
+            photoInput.files[0];
+
+
+        if (!photo) {
+
+            errorMessage.textContent =
+                "❌ Please upload an item photo.";
+
+            errorMessage.style.display = "block";
+
+            return;
+        }
+
+
+        submitBtn.disabled = true;
+
+        submitBtn.textContent =
+            "⏳ Submitting...";
+
+
+        successMessage.style.display = "none";
+
+        errorMessage.style.display = "none";
+
+
+        /*
+            FormData is required because
+            we are sending an image.
+        */
+
+        const formData = new FormData();
+
+
+        /* Match backend field names */
+
+        formData.append(
+            "item_type",
+            "lost"
+        );
+
+        formData.append(
+            "name",
+            document.getElementById("itemName").value
+        );
+
+        formData.append(
+            "description",
+            document.getElementById("description").value
+        );
+
+        formData.append(
+            "location",
+            document.getElementById("location").value
+        );
+
+        formData.append(
+            "category",
+            document.getElementById("category").value
+        );
+
+        formData.append(
+    "report_date",
+    document.getElementById("dateLost").value
+);
+
+formData.append(
+    "contact",
+    document.getElementById("contact").value
+);
+
+formData.append(
+    "photo",
+    photo
+);
+
+        try {
+
+            const response = await fetch(
+                `${API_URL}/report-with-photo`,
+                {
+                    method: "POST",
+                    body: formData
+                }
+            );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.error ||
+                    "Unable to submit item."
+                );
+
+            }
+
+
+            successMessage.textContent =
+                "✅ Lost item submitted successfully! " +
+                "The backend has saved your report and checked for possible matches.";
+
+            successMessage.style.display =
+                "block";
+
+
+            /*
+                Save the returned item ID.
+                This can be used later by the
+                matches/notifications pages.
+            */
+
+           if (data.report_id) {
+
+    localStorage.setItem(
+        "lastItemId",
+        data.report_id
+    );
+                
+
+                localStorage.setItem(
+                    "lastItemType",
+                    "lost"
+                );
+            }
+
+
+            form.reset();
+
+            imagePreview.src = "";
+
+            imagePreview.style.display =
+                "none";
+
+
+            /*
+                Go to matches page after
+                successful submission.
+            */
+
+            setTimeout(function () {
+
+                window.location.href =
+                    "matches.html";
+
+            }, 1500);
+
+
+        } catch (error) {
+
+            errorMessage.textContent =
+                "❌ Backend connection failed: " +
+                error.message;
+
+            errorMessage.style.display =
+                "block";
+
+        }
+
+
+        submitBtn.disabled = false;
+
+        submitBtn.textContent =
+            "📤 Submit Lost Item";
+
+     });
+
+</script>
+
+</body>
+</html>
